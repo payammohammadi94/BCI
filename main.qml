@@ -5,6 +5,7 @@ ApplicationWindow {
     property color slideColor: "#092145"
 
     property bool deviceStatus: false
+    property bool startStop: false
     id:mainWindow
     visible: true
     width: 1300
@@ -170,7 +171,7 @@ ApplicationWindow {
                 MouseArea{
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked:   console.log("2")
+                    onClicked:   console.log(3)
                 }
             }
 
@@ -195,7 +196,7 @@ ApplicationWindow {
                 MouseArea{
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked:   console.log("3")
+                    onClicked:   stackView.push(fourPage)
                 }
             }
 
@@ -235,335 +236,121 @@ ApplicationWindow {
             width: parent.width
             height: parent.height
             anchors.fill: parent
-            color: "gray"
-
+            color: "#e5e5e5"
+            Text {
+                id: centerName
+                text: qsTr("Check Impedance")
+                font.family: "Arial"
+                font.pointSize: 24
+                font.bold:true
+                color: "black"
+                anchors{
+                    top: page3Id.top
+                    topMargin: 20
+                    horizontalCenter: parent.horizontalCenter
+                }
+            }
             Rectangle{
                 id:checkImpedance
-                width: 736
-                height: 631
+                width: 640
+                height: 550
 
                 anchors.centerIn: parent
 
                 Image {
-                    id: backgroundSlide4
-                    source: "./images/checkImpedance.png"
+                    id: eegEloecId
+                    source: "./images/EEG_elec.png"
                     fillMode: Image.PreserveAspectCrop
                     anchors.centerIn: parent
                 }
-                Text {
-                    id: centerName
-                    text: qsTr("Check Impedance")
-                    font.family: "Arial"
-                    font.pointSize: 24
-                    font.bold:true
-                    color: "black"
+
+                Rectangle{
+                    width: 500
+                    height: 50
+                    color: "red"
                     anchors{
-                        top: page3Id.top
+                        top: eegEloecId.bottom
                         topMargin: 0
-                        left:  sideBarId.right
-                        leftMargin: 50
+                        horizontalCenter: parent.horizontalCenter
+                        verticalCenter: parent.verticalCenter
+                    }
+                    Row {
+                        spacing: 4
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        Button {
+                            id:startStopId
+                            width: 120
+                            height: 40
+                            background: Rectangle{
+                                color: "gray"
+                                radius: 10
+                            }
+                            // تنظیم رنگ متن
+                            contentItem: Text {
+                                text: !startStop? qsTr("Start") : qsTr("Stop")
+                                color: "white" // رنگ متن
+                                font.pixelSize: parent.font.pixelSize
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: {
+                                startStop = !startStop
+                                console.log("hello world")
+                            }
+                        }
+
+                        Button {
+                            id:backId
+
+                            width: 120
+                            height: 40
+                            background: Rectangle{
+                                color: "gray"
+                                radius: 10
+                            }
+                            // تنظیم رنگ متن
+                            contentItem: Text {
+                                text: qsTr("Back")
+                                color: "white" // رنگ متن
+                                font.pixelSize: parent.font.pixelSize
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: stackView.push(secondPage)
+                        }
+
                     }
                 }
+
             }
 
-            Rectangle{
-                id:sideBarId
-                width: 200
-                height: parent.height
-                color: "gray"
-                Text {
-                    id: ch1Id
-                    text: qsTr("Impedance Ch1: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: parent.top
-                        topMargin: 30
-                        left:parent.left
-                        leftMargin: 10
 
-                    }
-                }
-                Text {
-                    id: ch2Id
-                    text: qsTr("Impedance Ch2: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch1Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
+        }
 
-                    }
-                }
+    }
 
-                Text {
-                    id: ch3Id
-                    text: qsTr("Impedance Ch3: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch2Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
 
-                    }
-                }
 
-                Text {
-                    id: ch4Id
-                    text: qsTr("Impedance Ch4: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch3Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-                Text {
-                    id: ch5Id
-                    text: qsTr("Impedance Ch5: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch4Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-
-                Text {
-                    id: ch6Id
-                    text: qsTr("Impedance Ch6: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch5Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-
-                Text {
-                    id: ch7Id
-                    text: qsTr("Impedance Ch7: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch6Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-
-                Text {
-                    id: ch8Id
-                    text: qsTr("Impedance Ch8: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch7Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-
-                Text {
-                    id: ch9Id
-                    text: qsTr("Impedance Ch9: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch8Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-
-                Text {
-                    id: ch10Id
-                    text: qsTr("Impedance Ch10: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch9Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-
-                Text {
-                    id: ch11Id
-                    text: qsTr("Impedance Ch11: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch10Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-                Text {
-                    id: ch12Id
-                    text: qsTr("Impedance Ch12: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch11Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-                Text {
-                    id: ch13Id
-                    text: qsTr("Impedance Ch13: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch12Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-
-                Text {
-                    id: ch14Id
-                    text: qsTr("Impedance Ch14: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch13Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-                Text {
-                    id: ch15Id
-                    text: qsTr("Impedance Ch15: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch14Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-                Text {
-                    id: ch16Id
-                    text: qsTr("Impedance Ch16: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch15Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-                Text {
-                    id: ch17Id
-                    text: qsTr("Impedance Ch17: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch16Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-                Text {
-                    id: ch18Id
-                    text: qsTr("Impedance Ch18: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch17Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
-                }
-                Text {
-                    id: ch19Id
-                    text: qsTr("Impedance Ch19: ")
-                    font.family: "Arial"
-                    font.pointSize: 12
-                    font.bold:true
-                    color: "black"
-                    anchors{
-                        top: ch18Id.top
-                        topMargin: 40
-                        left:parent.left
-                        leftMargin: 10
-
-                    }
+    //four page
+    Component {
+        id: fourPage
+        Rectangle {
+            id:page4Id
+            width: parent.width
+            height: parent.height
+            anchors.fill: parent
+            color: "#e5e5e5"
+            Text {
+                id: centerName
+                text: qsTr("Record Signal")
+                font.family: "Arial"
+                font.pointSize: 24
+                font.bold:true
+                color: "black"
+                anchors{
+                    top: page4Id.top
+                    topMargin: 20
+                    horizontalCenter: parent.horizontalCenter
                 }
             }
         }
