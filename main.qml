@@ -1,16 +1,24 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-
+import QtCharts 2.15
 ApplicationWindow {
     property color slideColor: "#092145"
 
     property bool deviceStatus: false
     property bool startStop: false
+
+    property QtObject eegProvider: eegProvider
+    property var eegData: []
+
+
     id:mainWindow
     visible: true
     width: 1300
     height: 800
     title: "BCI 1.0V"
+
+
+
     Image {
         anchors.fill: parent
         source: "./images/home_background.jpeg" // مسیر عکس
@@ -335,29 +343,148 @@ ApplicationWindow {
     Component {
         id: fourPage
         Rectangle {
+            property bool startStopChart: false
+
             id:page4Id
             width: parent.width
             height: parent.height
             anchors.fill: parent
             color: "#e5e5e5"
-            Text {
-                id: centerName
-                text: qsTr("Record Signal")
-                font.family: "Arial"
-                font.pointSize: 24
-                font.bold:true
-                color: "black"
-                anchors{
-                    top: page4Id.top
-                    topMargin: 20
-                    horizontalCenter: parent.horizontalCenter
+
+            Flickable{
+                id: flickable
+                anchors.fill: parent
+                contentWidth: parent.width
+                contentHeight: 21*300
+                clip: true
+
+                Rectangle{
+                    id: headerId
+                    width: 500
+                    height: 50
+                    color: "#e5e5e5"
+                    anchors{
+                        topMargin: 100
+                    }
+
+                    Row {
+                        spacing: 4
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.leftMargin: 500
+                        Button {
+                            id:startStopId
+                            width: 120
+                            height: 40
+                            background: Rectangle{
+                                color: "gray"
+                                radius: 10
+                            }
+                            // تنظیم رنگ متن
+                            contentItem: Text {
+                                text: !startStopChart? qsTr("Start") : qsTr("Stop")
+                                color: "white" // رنگ متن
+                                font.pixelSize: parent.font.pixelSize
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: {
+                                if(!startStopChart){
+                                    eegProvider.start_record_signal()
+                                    startStopChart = !startStopChart
+                                }
+                                else{
+                                    eegProvider.stop_record_signal()
+                                    startStopChart = !startStopChart
+                                }
+
+                            }
+                        }
+
+                        Button {
+                            id:backId
+
+                            width: 120
+                            height: 40
+                            background: Rectangle{
+                                color: "gray"
+                                radius: 10
+                            }
+                            // تنظیم رنگ متن
+                            contentItem: Text {
+                                text: qsTr("Back")
+                                color: "white" // رنگ متن
+                                font.pixelSize: parent.font.pixelSize
+                                horizontalAlignment: Text.AlignHCenter
+                                verticalAlignment: Text.AlignVCenter
+                            }
+                            onClicked: stackView.push(secondPage)
+                        }
+
+                    }
                 }
+
+                Column {
+                    width: parent.width
+                    spacing: 2
+                    anchors{
+                        top: headerId.bottom
+                        topMargin: 10
+                    }
+
+                    Repeater{
+                        model:21
+                        ChartView{
+                            id:chartView
+                            width : flickable.width - 20
+                            height : 300
+                            legend.visible:true
+                            antialiasing: true
+
+                            ValueAxis{
+                                id:xAxis
+                                min:0
+                                max:100
+                                titleText:"Time (ms)"
+                            }
+                            ValueAxis{
+                                id:yAxis
+                                min:-100
+                                max:100
+                                titleText:"Amplitude (uV)"
+                            }
+                            LineSeries{
+                                id:lineSeries
+                                name:"channel " + (index + 1)
+                                axisX:xAxis
+                                axisY:yAxis
+                                color:Qt.rgba(Math.random(),Math.random(),Math.random(),1)
+                                Component.onCompleted: {
+                                    for(var i=0;i<100;i++){
+                                        append(i,0);
+                                    }
+                                }
+                            }
+                            Connections{
+                                target: eegProvider
+                                function onUpdateData(msg) {
+                                    eegData = msg;
+                                    lineSeries.clear()
+                                    for(var j=0;j<eegData[index].length;j++){
+                                        lineSeries.append(j,eegData[index][j]);
+                                    }
+                                }
+
+
+                            }
+                        }
+                    }
+                }
+
             }
+
         }
-
     }
-
-
 }
 
 
