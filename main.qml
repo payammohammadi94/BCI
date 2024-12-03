@@ -5,10 +5,8 @@ ApplicationWindow {
     property color slideColor: "#092145"
 
     property bool deviceStatus: false
-    property bool startStop: false
-
     property QtObject eegProvider: eegProvider
-    property var eegData: []
+
 
 
     id:mainWindow
@@ -89,9 +87,7 @@ ApplicationWindow {
 
         }
     }
-
     //second page
-
     Component {
         id: secondPage
         Rectangle {
@@ -234,12 +230,13 @@ ApplicationWindow {
             }
         }
     }
-
-
     //three page
     Component {
+
         id: threePage
         Rectangle {
+            property bool startStop: false
+
             id:page3Id
             width: parent.width
             height: parent.height
@@ -271,7 +268,6 @@ ApplicationWindow {
                     fillMode: Image.PreserveAspectCrop
                     anchors.centerIn: parent
                 }
-
                 Rectangle{
                     width: 500
                     height: 50
@@ -337,101 +333,127 @@ ApplicationWindow {
 
     }
 
-
-
     //four page
     Component {
         id: fourPage
         Rectangle {
+            property var timeData: []
+            property var freqData: []
             property bool startStopChart: false
-
+            property bool freqShow: true
             id:page4Id
             width: parent.width
             height: parent.height
             anchors.fill: parent
             color: "#e5e5e5"
 
-            Flickable{
-                id: flickable
-                anchors.fill: parent
-                contentWidth: parent.width
-                contentHeight: 21*300
-                clip: true
-
-                Rectangle{
-                    id: headerId
-                    width: 500
-                    height: 50
-                    color: "#e5e5e5"
-                    anchors{
-                        topMargin: 100
-                    }
-
-                    Row {
-                        spacing: 4
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.leftMargin: 500
-                        Button {
-                            id:startStopId
-                            width: 120
-                            height: 40
-                            background: Rectangle{
-                                color: "gray"
-                                radius: 10
-                            }
-                            // تنظیم رنگ متن
-                            contentItem: Text {
-                                text: !startStopChart? qsTr("Start") : qsTr("Stop")
-                                color: "white" // رنگ متن
-                                font.pixelSize: parent.font.pixelSize
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-                            }
-                            onClicked: {
-                                if(!startStopChart){
-                                    eegProvider.start_record_signal()
-                                    startStopChart = !startStopChart
-                                }
-                                else{
-                                    eegProvider.stop_record_signal()
-                                    startStopChart = !startStopChart
-                                }
-
-                            }
-                        }
-
-                        Button {
-                            id:backId
-
-                            width: 120
-                            height: 40
-                            background: Rectangle{
-                                color: "gray"
-                                radius: 10
-                            }
-                            // تنظیم رنگ متن
-                            contentItem: Text {
-                                text: qsTr("Back")
-                                color: "white" // رنگ متن
-                                font.pixelSize: parent.font.pixelSize
-                                horizontalAlignment: Text.AlignHCenter
-                                verticalAlignment: Text.AlignVCenter
-                            }
-                            onClicked: stackView.push(secondPage)
-                        }
-
-                    }
+            Rectangle{
+                id: headerId
+                width: 500
+                height: 50
+                color: "#e5e5e5"
+                anchors{
+                    top:page4Id.top
+                    horizontalCenter: page4Id.horizontalCenter
+                    topMargin: 5
                 }
 
+                Row {
+                    spacing: 4
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.leftMargin: 500
+                    Button {
+                        id:startStopId
+                        width: 120
+                        height: 40
+                        background: Rectangle{
+                            color: "gray"
+                            radius: 10
+                        }
+                        // تنظیم رنگ متن
+                        contentItem: Text {
+                            text: !startStopChart? qsTr("Start") : qsTr("Stop")
+                            color: "white" // رنگ متن
+                            font.pixelSize: parent.font.pixelSize
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        onClicked: {
+                            if(!startStopChart){
+                                eegProvider.start_record_signal()
+                                startStopChart = !startStopChart
+                            }
+                            else{
+                                eegProvider.stop_record_signal()
+                                startStopChart = !startStopChart
+                            }
+
+                        }
+                    }
+
+                    Button {
+                        id:saveDataId
+                        width: 120
+                        height: 40
+                        background: Rectangle{
+                            color: "gray"
+                            radius: 10
+                        }
+                        // تنظیم رنگ متن
+                        contentItem: Text {
+                            text: qsTr("save")
+                            color: "white" // رنگ متن
+                            font.pixelSize: parent.font.pixelSize
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        onClicked: {
+                            console.log("save data")
+                        }
+                    }
+
+                    Button {
+                        id:backId
+
+                        width: 120
+                        height: 40
+                        background: Rectangle{
+                            color: "gray"
+                            radius: 10
+                        }
+                        // تنظیم رنگ متن
+                        contentItem: Text {
+                            text: qsTr("Back")
+                            color: "white" // رنگ متن
+                            font.pixelSize: parent.font.pixelSize
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        onClicked: stackView.push(secondPage)
+                    }
+
+                }
+            }
+
+            Flickable{
+                id: flickable
+                anchors{
+                    top: headerId.bottom
+                    topMargin: 5
+                }
+                width: parent.width
+                height: parent.height + 300
+                contentWidth: parent.width
+                contentHeight: 21*330
+                clip: true
                 Column {
                     width: parent.width
-                    spacing: 2
+                    spacing: 0
                     anchors{
                         top: headerId.bottom
                         topMargin: 10
                     }
-
                     Repeater{
                         model:21
                         ChartView{
@@ -440,51 +462,89 @@ ApplicationWindow {
                             height : 300
                             legend.visible:true
                             antialiasing: true
+                            //                            gesture.enabled:true
 
+                            //backgroundColor:"gray"
                             ValueAxis{
                                 id:xAxis
                                 min:0
                                 max:100
                                 titleText:"Time (ms)"
+                                visible:!freqShow
                             }
                             ValueAxis{
                                 id:yAxis
                                 min:-100
                                 max:100
                                 titleText:"Amplitude (uV)"
+                                visible:!freqShow
                             }
                             LineSeries{
                                 id:lineSeries
-                                name:"channel " + (index + 1)
+                                name:"Time Domain Channel " + (index + 1)
                                 axisX:xAxis
                                 axisY:yAxis
                                 color:Qt.rgba(Math.random(),Math.random(),Math.random(),1)
-                                Component.onCompleted: {
-                                    for(var i=0;i<100;i++){
-                                        append(i,0);
-                                    }
+                                visible: !freqShow
+                            }
+
+                            ValueAxis{
+                                id:freqXAxis
+                                min:0
+                                max:100
+                                titleText:"Frequency (hz)"
+                                visible:freqShow
+                            }
+                            ValueAxis{
+                                id:freqYAxis
+                                min:0
+                                max:2000
+                                tickInterval:100
+                                titleText:"Amplitude (uV)"
+                                visible:freqShow
+                            }
+                            LineSeries{
+                                id:lineSeriesFreq
+                                name:"Freq Domain Channel " + (index + 1)
+                                axisX:freqXAxis
+                                axisY:freqYAxis
+                                color:Qt.rgba(Math.random(),Math.random(),Math.random(),1)
+                                visible: freqShow
+                            }
+                            MouseArea{
+                                anchors.fill: parent
+                                onClicked: {
+                                    freqShow = !freqShow
                                 }
                             }
+
                             Connections{
                                 target: eegProvider
-                                function onUpdateData(msg) {
-                                    eegData = msg;
-                                    lineSeries.clear()
-                                    for(var j=0;j<eegData[index].length;j++){
-                                        lineSeries.append(j,eegData[index][j]);
+                                function onUpdateData(timeDataGet,freqDataGet) {
+                                    if(freqShow){
+                                        lineSeriesFreq.clear();
+                                        for(var j=0;j< freqDataGet[index].length;j++){
+                                            lineSeriesFreq.append(j,freqDataGet[index][j]);
+                                        }
+
                                     }
+                                    else{
+                                        lineSeries.clear()
+                                        for(var i=0;i<timeDataGet[index].length;i++){
+                                            lineSeries.append(i,timeDataGet[index][i]);
+                                        }
+                                    }
+
+
                                 }
-
-
                             }
                         }
                     }
+
                 }
 
             }
-
         }
     }
 }
-
 
