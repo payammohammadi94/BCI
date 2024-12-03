@@ -432,7 +432,6 @@ ApplicationWindow {
                         }
                         onClicked: stackView.push(secondPage)
                     }
-
                 }
             }
 
@@ -462,7 +461,7 @@ ApplicationWindow {
                             height : 300
                             legend.visible:true
                             antialiasing: true
-                            //                            gesture.enabled:true
+                            //gesture.enabled:true
 
                             //backgroundColor:"gray"
                             ValueAxis{
@@ -487,7 +486,6 @@ ApplicationWindow {
                                 color:Qt.rgba(Math.random(),Math.random(),Math.random(),1)
                                 visible: !freqShow
                             }
-
                             ValueAxis{
                                 id:freqXAxis
                                 min:0
@@ -526,7 +524,6 @@ ApplicationWindow {
                                         for(var j=0;j< freqDataGet[index].length;j++){
                                             lineSeriesFreq.append(j,freqDataGet[index][j]);
                                         }
-
                                     }
                                     else{
                                         lineSeries.clear()
@@ -534,8 +531,6 @@ ApplicationWindow {
                                             lineSeries.append(i,timeDataGet[index][i]);
                                         }
                                     }
-
-
                                 }
                             }
                         }
