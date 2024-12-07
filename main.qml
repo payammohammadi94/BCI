@@ -315,7 +315,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance2.toString()
                     }
                 }
 
@@ -330,7 +330,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance3.toString()
                     }
                 }
 
@@ -345,7 +345,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance4.toString()
                     }
                 }
 
@@ -360,7 +360,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance5.toString()
                     }
                 }
 
@@ -375,7 +375,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance6.toString()
                     }
                 }
 
@@ -391,7 +391,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance7.toString()
                     }
                 }
 
@@ -406,7 +406,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance8.toString()
                     }
                 }
                 Rectangle{
@@ -420,7 +420,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance9.toString()
                     }
                 }
 
@@ -435,7 +435,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance10.toString()
                     }
                 }
                 Rectangle{
@@ -449,7 +449,7 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance11.toString()
                     }
                 }
 
@@ -464,10 +464,114 @@ ApplicationWindow {
                     Text {
                         anchors.centerIn: parent
                         font.pixelSize: 10
-                        text: impedance1.toString()
+                        text: impedance12.toString()
                     }
                 }
 
+                Rectangle{
+                    id:impadance13
+                    width: 60
+                    height: 60
+                    color: impedance1<100?checkRangeCorrect:checkRangeInCorrect
+                    radius: width/2
+                    x:135
+                    y:380
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: 10
+                        text: impedance13.toString()
+                    }
+                }
+
+                Rectangle{
+                    id:impadance14
+                    width: 60
+                    height: 60
+                    color: impedance1<100?checkRangeCorrect:checkRangeInCorrect
+                    radius: width/2
+                    x:215
+                    y:365
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: 10
+                        text: impedance14.toString()
+                    }
+                }
+
+                Rectangle{
+                    id:impadance15
+                    width: 60
+                    height: 60
+                    color: impedance1<100?checkRangeCorrect:checkRangeInCorrect
+                    radius: width/2
+                    x:293
+                    y:373
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: 10
+                        text: impedance15.toString()
+                    }
+                }
+
+                Rectangle{
+                    id:impadance16
+                    width: 60
+                    height: 60
+                    color: impedance1<100?checkRangeCorrect:checkRangeInCorrect
+                    radius: width/2
+                    x:375
+                    y:367
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: 10
+                        text: impedance16.toString()
+                    }
+                }
+
+                Rectangle{
+                    id:impadance17
+                    width: 60
+                    height: 60
+                    color: impedance1<100?checkRangeCorrect:checkRangeInCorrect
+                    radius: width/2
+                    x:449
+                    y:382
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: 10
+                        text: impedance17.toString()
+                    }
+                }
+
+                Rectangle{
+                    id:impadance18
+                    width: 60
+                    height: 60
+                    color: impedance1<100?checkRangeCorrect:checkRangeInCorrect
+                    radius: width/2
+                    x:229
+                    y:450
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: 10
+                        text: impedance18.toString()
+                    }
+                }
+
+                Rectangle{
+                    id:impadance19
+                    width: 60
+                    height: 60
+                    color: impedance1<100?checkRangeCorrect:checkRangeInCorrect
+                    radius: width/2
+                    x:354
+                    y:451
+                    Text {
+                        anchors.centerIn: parent
+                        font.pixelSize: 10
+                        text: impedance19.toString()
+                    }
+                }
 
                 Rectangle{
                     width: 500
