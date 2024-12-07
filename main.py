@@ -58,19 +58,36 @@ class EEGDataProvider(QObject):
         if self.timer.isActive():
             self.timer.stop()
 
+class ImpedanceModel(QObject):
+    impedanceChaged = pyqtSignal(list,arguments=['checkImpedance'])
 
+    def __init__(self):
+        super().__init__()
+        self._impedance = [0] * 21
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.updateImpedance)
     
+    @pyqtSlot()
+    def startUpdating(self):
+        self.timer.start(1500)
+
+    @pyqtSlot()
+    def stopUpdating(self):
+        self.timer.stop()
+
+    def updateImpedance(self):
+        self._impedance = [random.uniform(20,150) for _ in range(21)]
+        
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     engine = QQmlApplicationEngine()
     eegProvider = EEGDataProvider()
-
-
-
-
+    impedanceModel = ImpedanceModel()
     engine.load(QUrl.fromLocalFile(os.path.join(CURRENT_DIR, "main.qml")))
     # app.setWindowIcon(QIcon(os.path.join(CURRENT_DIR, "appicon.png")))
     engine.rootObjects()[0].setProperty("eegProvider",eegProvider)
+    engine.rootObjects()[0].setProperty("impedanceModel",impedanceModel)
     if not engine.rootObjects():
         sys.exit(-1)
     sys.exit(app.exec())
