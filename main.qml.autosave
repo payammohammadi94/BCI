@@ -769,6 +769,7 @@ ApplicationWindow {
                             radius: 10
                         }
                     }
+                    
                     TextField{
                         id:ageInput
                         width: 150
