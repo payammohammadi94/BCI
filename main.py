@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import QApplication
 from PyQt6.QtQml import QQmlApplicationEngine
 import random
 import numpy as np
+import json
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -42,6 +43,21 @@ class EEGDataProvider(QObject):
             fft_result.append(self.calculate_fft(data).tolist())
         
         self.update_data(timeData,fft_result)
+
+    @pyqtSlot(str,str,str)
+    def save_data(self,name,age,label):
+        data = {
+            "name":name,
+            "age":age,
+            "label":label,
+            "eeg_data":self.time_data
+        }
+
+        try:
+            with open("data\\eeg_data.json","a") as json_file:
+                json.dump(data,json_file,indent=4)
+        except Exception as e:
+            print(f"Error saving data: {e}")
 
 
     @pyqtSlot()

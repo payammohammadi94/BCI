@@ -714,7 +714,7 @@ ApplicationWindow {
                             verticalAlignment: Text.AlignVCenter
                         }
                         onClicked: {
-                            console.log("save data")
+                            eegProvider.save_data(nameInput.text,ageInput.text,labelInput.text)
                         }
                     }
 
@@ -769,6 +769,7 @@ ApplicationWindow {
                             radius: 10
                         }
                     }
+
                     TextField{
                         id:ageInput
                         width: 150
