@@ -1,9 +1,9 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtCharts 2.15
+
 ApplicationWindow {
     property color slideColor: "#092145"
-
     property bool deviceStatus: false
     property QtObject eegProvider: eegProvider
 
@@ -175,7 +175,7 @@ ApplicationWindow {
                 MouseArea{
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
-                    onClicked:   console.log(3)
+                    onClicked:   stackView.push(fivePage)
                 }
             }
 
@@ -802,6 +802,231 @@ ApplicationWindow {
 
                     }
 
+                }
+            }
+
+
+            Flickable{
+                id: flickable
+                anchors{
+                    top: formId.bottom
+                    topMargin: 5
+                }
+                width: parent.width
+                height: parent.height + 300
+                contentWidth: parent.width
+                contentHeight: 21*330
+                clip: true
+                Column {
+                    width: parent.width
+                    spacing: 0
+                    anchors{
+                        top: headerId.bottom
+                        topMargin: 10
+                    }
+                    Repeater{
+                        model:21
+                        ChartView{
+                            id:chartView
+                            width : flickable.width - 20
+                            height : 300
+                            legend.visible:true
+                            antialiasing: true
+                            //gesture.enabled:true
+
+                            //backgroundColor:"gray"
+                            ValueAxis{
+                                id:xAxis
+                                min:0
+                                max:100
+                                titleText:"Time (ms)"
+                                visible:!freqShow
+                            }
+                            ValueAxis{
+                                id:yAxis
+                                min:-100
+                                max:100
+                                titleText:"Amplitude (uV)"
+                                visible:!freqShow
+                            }
+                            LineSeries{
+                                id:lineSeries
+                                name:"Time Domain Channel " + (index + 1)
+                                axisX:xAxis
+                                axisY:yAxis
+                                color:Qt.rgba(Math.random(),Math.random(),Math.random(),1)
+                                visible: !freqShow
+                            }
+                            ValueAxis{
+                                id:freqXAxis
+                                min:0
+                                max:100
+                                titleText:"Frequency (hz)"
+                                visible:freqShow
+                            }
+                            ValueAxis{
+                                id:freqYAxis
+                                min:0
+                                max:2000
+                                tickInterval:100
+                                titleText:"Amplitude (uV)"
+                                visible:freqShow
+                            }
+                            LineSeries{
+                                id:lineSeriesFreq
+                                name:"Freq Domain Channel " + (index + 1)
+                                axisX:freqXAxis
+                                axisY:freqYAxis
+                                color:Qt.rgba(Math.random(),Math.random(),Math.random(),1)
+                                visible: freqShow
+                            }
+                            MouseArea{
+                                anchors.fill: parent
+                                onClicked: {
+                                    freqShow = !freqShow
+                                }
+                            }
+
+                            Connections{
+                                target: eegProvider
+                                function onUpdateData(timeDataGet,freqDataGet) {
+                                    if(freqShow){
+                                        lineSeriesFreq.clear();
+                                        for(var j=0;j< freqDataGet[index].length;j++){
+                                            lineSeriesFreq.append(j,freqDataGet[index][j]);
+                                        }
+                                    }
+                                    else{
+                                        lineSeries.clear()
+                                        for(var i=0;i<timeDataGet[index].length;i++){
+                                            lineSeries.append(i,timeDataGet[index][i]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+    }
+
+
+    //five page
+    Component {
+        id: fivePage
+        Rectangle {
+            property var timeData: []
+            property var freqData: []
+            property bool startStopChart: false
+            property bool freqShow: true
+            id:page5Id
+            width: parent.width
+            height: parent.height
+            anchors.fill: parent
+            color: "#e5e5e5"
+
+            Rectangle{
+                id: headerId
+                width: 500
+                height: 50
+                color: "#e5e5e5"
+                anchors{
+                    top:page5Id.top
+                    horizontalCenter: page5Id.horizontalCenter
+                    topMargin: 5
+                }
+
+                Row {
+                    spacing: 4
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.leftMargin: 500
+                    Button {
+                        id:startStopId
+                        width: 120
+                        height: 40
+                        background: Rectangle{
+                            color: "gray"
+                            radius: 10
+                        }
+                        // تنظیم رنگ متن
+                        contentItem: Text {
+                            text: !startStopChart? qsTr("Start") : qsTr("Stop")
+                            color: "white" // رنگ متن
+                            font.pixelSize: parent.font.pixelSize
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        onClicked: {
+                            if(!startStopChart){
+                                eegProvider.start_record_signal()
+                                startStopChart = !startStopChart
+                            }
+                            else{
+                                eegProvider.stop_record_signal()
+                                startStopChart = !startStopChart
+                            }
+
+                        }
+                    }
+
+                    Button {
+                        id:backId
+
+                        width: 120
+                        height: 40
+                        background: Rectangle{
+                            color: "gray"
+                            radius: 10
+                        }
+                        // تنظیم رنگ متن
+                        contentItem: Text {
+                            text: qsTr("Back")
+                            color: "white" // رنگ متن
+                            font.pixelSize: parent.font.pixelSize
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
+                        onClicked: stackView.push(secondPage)
+                    }
+                }
+            }
+            Rectangle{
+                id: formId
+                width: 800
+                height: 50
+                color: "#e5e5e5"
+                anchors{
+                    top:headerId.bottom
+                    horizontalCenter: page5Id.horizontalCenter
+                    topMargin: 5
+                }
+                Row {
+                    id:formRowId
+                    spacing: 4
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.verticalCenter: parent.verticalCenter
+
+                    TextField{
+                        anchors.centerIn: parent
+                        id:ageInput
+                        width: 150
+                        height: 40
+                        text: "up"
+                        color: "black"
+                        font.pixelSize: 12
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                        background: Rectangle{
+                            color: "#f0f0f0"
+                            border.color: "gray"
+                            border.width: 1
+                            radius: 10
+                        }
+                    }
                 }
             }
 
